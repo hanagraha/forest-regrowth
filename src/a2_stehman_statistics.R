@@ -1,9 +1,11 @@
 # -------------------------------------------------------------------------
 # IMPORT PACKAGES AND READ DATA
 # -------------------------------------------------------------------------
-# Install packages
-install.packages("terra")
-install.packages("mapaccuracy")
+# Install packages if missing
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+for (pkg in c("terra", "mapaccuracy")) {
+  if (!requireNamespace(pkg, quietly = TRUE)) install.packages(pkg)
+}
 
 # Load packages
 library(terra)
