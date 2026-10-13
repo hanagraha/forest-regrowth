@@ -1,9 +1,13 @@
 # forest-regrowth
 Code repository for processing FD30Ref data, conducting accuracy assessments of remote sensing based maps, and calculating sample-based area estimates of forest trajectories
 
+## Data
+
+The data required to run the analysis is available to reviewers on Figshare as part of the open peer review process and will be made publicly available on Zenodo upon publication of the manuscript. Unzip the file in the project root so it creates a `data/` folder.
+
 ## Dependencies
 
-Project dependencies are listed in [`requirements.txt`](requirements.txt). A virtual nvironment can be created using any package manager; an example using `venv` is provided below.
+Project dependencies are listed in [`requirements.txt`](requirements.txt). A virtual environment can be created using any package manager; an example using `venv` is provided below.
 
 ### Example: venv
 
