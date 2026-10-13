@@ -7,6 +7,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import seaborn as sns
 import matplotlib.colors as mcolors
+from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 # Read stehman output
 zhang = pd.read_csv("data/stehman/trajectory/zhang_stats.csv")
@@ -22,7 +23,9 @@ stats = pd.concat([
 
 # Calculate error ratios
 stats['error_ratio'] = stats['ce'] / stats['oe']
-stats[stats['class']=='Forest Loss']['oe']
+rho_table = stats.pivot(index='class', columns='product', values='error_ratio')
+rho_table.to_csv('data/stehman/trajectory/rho_errorratio.csv')
+print('statistics saved to data/stehman/trajectory/rho_errorratio.csv')
 
 # Build color map
 blue_cmap = mcolors.LinearSegmentedColormap.from_list("muted_blue", ["#DEF4FF", "#332288"])
@@ -129,6 +132,9 @@ ax.set_xticklabels(overall['product'], rotation=0, ha='center', fontsize=14)
 # Adust y ticks and axes
 ax.set_ylabel('Error', fontsize=14)
 ax.tick_params(axis='y', labelsize=14)
+ax.yaxis.set_major_locator(MultipleLocator(0.01))
+ax.yaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+ax.set_ylim(bottom=0.075)
 
 # Add legend
 ax.legend(fontsize=12, loc='lower center', bbox_to_anchor=(0.5, 1.01), frameon=True)

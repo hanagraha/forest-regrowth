@@ -7,6 +7,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import matplotlib.patches as mpatches
 import matplotlib.colors as mcolors
+from matplotlib.ticker import MultipleLocator
 
 
 # -------------------------------------------------------------------------
@@ -90,6 +91,7 @@ ax.bar(area_traj['class'], area_traj['area'], yerr=yerr,
 ax.set_ylabel('Trajectory Area (Mha)', fontsize = 17)
 ax.tick_params(axis='x', rotation=0, labelsize=14)
 ax.tick_params(axis='y', labelsize=14)
+ax.yaxis.set_major_locator(MultipleLocator(100))
 
 # Add gridlines
 ax.yaxis.grid(linestyle='--', alpha=0.6, zorder=0)
@@ -241,6 +243,11 @@ FONTSIZE = 14
 # Define x positions
 x_pos = {y: i / (len(years) - 1) * 0.82 + 0.05 for i, y in enumerate(years)}
 
+# Define helper function for darkening colors
+def darken(color, factor=0.6):
+    r, g, b = mcolors.to_rgb(color)
+    return (r * factor, g * factor, b * factor)
+
 # Initialize figure
 fig, ax = plt.subplots(figsize=(12, 8))
 ax.set_xlim(0, 1)
@@ -307,6 +314,13 @@ for y1, y2 in zip(years[:-1], years[1:]):
         y_arr = np.concatenate([top_y, bot_y[::-1]])
         ax.fill(x_arr, y_arr, color=STATE_COLORS.get(src, '#aaaaaa'), alpha=0.35, linewidth=0)
 
+        # Add Mha label for flows
+        # xm = (x0 + x1) / 2
+        # ym = (sy0 + sy1 + ty0 + ty1) / 4
+        # ax.text(xm, ym, f"{val:.2f} ± {row['se']:.2f} Mha", ha='center', va='center', fontsize=14,
+        #         fontweight='bold', color=darken(STATE_COLORS.get(src, '#aaaaaa')),
+        #         zorder=10)
+
 # Tight layout and save
 plt.tight_layout()
 plt.savefig("data/figures/main/trajectory_sankey.png", dpi=300, bbox_inches='tight')
@@ -342,11 +356,6 @@ combined = pd.DataFrame({'2000': area2000_bars, '2020': area2020_bars}).T.fillna
 cols = ['#44AA99', '#44AA99', '#DDCC77', '#DDCC77']
 hatches = [None, '//', None, '//']
 labels = combined.columns.tolist()
-
-# Define helper function for darkening colors
-def darken(color, factor=0.6):
-    r, g, b = mcolors.to_rgb(color)
-    return (r * factor, g * factor, b * factor)
 
 # Initialize figure
 fig, ax = plt.subplots(figsize=(3, 8))
